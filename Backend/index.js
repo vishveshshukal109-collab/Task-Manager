@@ -3,7 +3,8 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
-import authRoute from './routes/auth.route.js'
+import authRoutes from './routes/auth.route.js'
+import userRoutes from './routes/user.route.js'
 
 dotenv.config()
 
@@ -31,7 +32,8 @@ app.listen(3000, () => {
     console.log('Server is running on port 3000')
 })
 
-app.use('/api/auth', authRoute)
+app.use('/api/auth', authRoutes)
+app.use('/api/users', userRoutes)
 
 
 

@@ -1,5 +1,17 @@
 import mongoose from 'mongoose';
 
+const todoschema = new mongoose.Schema({
+    text: {
+        type: String,
+        required: true,
+    },
+    completed: {
+        type: Boolean,
+        default: false,
+    }
+});
+
+
 const taskSchema = new mongoose.Schema(
     {
         title: {
@@ -45,7 +57,7 @@ const taskSchema = new mongoose.Schema(
 
     attachments: [
         {
-            filename: String,
+            type: String,
         },
     ],
 
