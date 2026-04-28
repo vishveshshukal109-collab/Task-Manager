@@ -3,18 +3,22 @@ import AuthLayout from "../../components/AuthLayout";
 import { BiLogoMicrosoftTeams } from "react-icons/bi";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { validateEmail } from "../../utils/helper";
+import axiosInstance from "../../utils/axioInstance";
 
 
 
 const Login = () => {
+  const navigate = useNavigate()
+  
+  
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState(null)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
 
     if(!validateEmail(email)) {
@@ -30,6 +34,28 @@ const Login = () => {
     setError(null)
 
     // Login API call
+    try {
+      const response = await axiosInstance.post("/auth/signin",{
+        email,
+        password,
+      })
+
+      //console.log(response.data)
+
+      if(response.data.role === "admin"){
+        navigate("/admin/dashboard")
+      }else{
+        navigate("/user/dashboard")
+      }
+
+    } catch (error) {
+      if(error.response && error.response.data.message){
+        setError(error.response.data.message)
+      }else{
+        setError("Something went wrong. Please try again!")
+      }
+      
+    }
   }
 
   return (

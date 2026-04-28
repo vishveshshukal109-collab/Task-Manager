@@ -23,7 +23,7 @@ const app = express()
 app.use(cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:5173', // Allow requests from the frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
+    credentials: true,
 }))
 
 // Middleware to handle JSON object in req body
