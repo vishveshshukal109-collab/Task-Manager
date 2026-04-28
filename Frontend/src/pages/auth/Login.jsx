@@ -7,7 +7,7 @@ import {Link, useNavigate} from "react-router-dom";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axioInstance";
 import {useDispatch, useSelector} from "react-redux"
-import { signInStart, signInSuccess } from "../../redux/slice/userSlice";
+import { signInFailure, signInStart, signInSuccess } from "../../redux/slice/userSlice";
 
 
 
@@ -63,8 +63,10 @@ const Login = () => {
     } catch (error) {
       if(error.response && error.response.data.message){
         setError(error.response.data.message)
+        dispatch(signInFailure(error.response.data.message))
       }else{
         setError("Something went wrong. Please try again!")
+        dispatch(signInFailure("Something went wrong. Please try again!"))
       }
       
     }
@@ -130,7 +132,7 @@ const Login = () => {
               {error && <p className="text-red-500 text-sm">{error}</p>}
 
               {loading ? (
-                <span className="animate-pulse">Loading...
+                <span className="animate-pulse w-full text-center bg-blue-600 text-white">Loading...
                   </span>
               ): (<div>
                 <button type ="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-0 focus:ring-offset-0 cursor-pointer uppercase">
