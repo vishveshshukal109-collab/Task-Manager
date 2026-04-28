@@ -92,7 +92,7 @@ const Login = () => {
               {error && <p className="text-red-500 text-sm">{error}</p>}
 
               <div>
-                <button type ="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-0 focus:ring-offset-0 cursor-pointer">
+                <button type ="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-0 focus:ring-offset-0 cursor-pointer uppercase">
                   LOGIN
                 </button>
               </div>
