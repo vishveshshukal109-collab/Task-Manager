@@ -3,13 +3,18 @@ import AuthLayout from "../../components/AuthLayout";
 import { BiLogoMicrosoftTeams } from "react-icons/bi";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { validateEmail } from "../../utils/helper";
 import ProfilePhotoSelector from "../../components/ProfilePhotoSelector";
+import axiosInstance from "../../utils/axioInstance";
+import uploadImage from "../../utils/uploadImage";
 
 
 
-const signup = () => {
+const Signup = () => {
+  const navigate = useNavigate()
+
+
   const [fullName, setFullName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -19,8 +24,11 @@ const signup = () => {
   const [adminInviteToken, setAdminInviteToken] = useState("")
   const [showAdminInviteToken, setShowAdminInviteToken] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
+
+
+    let profileImageUrl = ""
 
     if(!fullName){
       setError("Please Enter the name")
@@ -40,6 +48,33 @@ const signup = () => {
     setError(null)
 
     // Signup API call
+    try {
+      // Upload profile picture if present 
+
+      if(profilePic)
+      {
+        const imageUploadRes = await uploadImage(profilePic)
+        profileImageUrl = imageUploadRes.imageUrl || ""
+      }
+
+      const response = await axiosInstance.post("/auth/signup", {
+        name: fullName,
+        email,
+        password,
+        profileImageUrl,
+        adminJoinCode: adminInviteToken,
+      })
+
+      if(response.data){
+        navigate("/login")
+      }
+    } catch (error) {
+      if(error.response && error.response.data.message){
+        setError(error.response.data.message)
+      }else{
+        setError("Something went wrong. Please try again!")
+      }
+    }
   }
 
   return (
@@ -162,4 +197,4 @@ const signup = () => {
   );
 };
 
-export default signup;
+export default Signup;

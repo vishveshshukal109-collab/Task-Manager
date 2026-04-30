@@ -3,13 +3,18 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
+import path from "path"
 
 import authRoutes from './routes/auth.route.js'
 import userRoutes from './routes/user.route.js'
 import taskRoutes from './routes/task.route.js'
 import reportsRoutes from './routes/report.route.js'
+import { fileURLToPath } from 'url'
 
 dotenv.config()
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('Database connected successfully')
@@ -40,7 +45,9 @@ app.use('/api/users', userRoutes)
 app.use('/api/tasks', taskRoutes)
 app.use('/api/reports', reportsRoutes)
 
+// serve static files from "uploads" folder
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 
 
 
